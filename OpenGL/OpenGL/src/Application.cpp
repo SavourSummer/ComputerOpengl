@@ -123,6 +123,11 @@ int main(void)
         glfwTerminate();
         return -1;
     }
+    //设置Opengl版本3.3，原4.6,并且设置核心版本，查看兼容性
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 6);
+    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
@@ -156,6 +161,9 @@ int main(void)
         0, 1, 2,
         2, 3, 0
     };
+    unsigned int vao;//设置Vertex Array Object,用于统一大量绘制的中介
+    GLCall(glGenVertexArrays(1, &vao));
+    GLCall(glBindVertexArray(vao));
 
     unsigned int buffer;
     GLCall(glGenBuffers(1, &buffer)); /* 生成缓冲区 */
@@ -182,15 +190,25 @@ int main(void)
     ASSERT(location != -1);
     GLCall(glUniform4f(location, 0.2f, 0.3f, 0.8f, 1.0f)); /* 设置对应的统一变量 */
 
+
+    //解绑
+    GLCall(glBindVertexArray(0));
+    GLCall(glUseProgram(0));
+    GLCall(glBindBuffer(GL_ARRAY_BUFFER,0));
+    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
     float r = 0.0f;
     float increment = 0.05f;
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window)) {
         /* Render here */
         GLCall(glClear(GL_COLOR_BUFFER_BIT));
+        GLCall(glUseProgram(shader));
 
         GLCall(glUniform4f(location, r, 0.3f, 0.8f, 1.0f));
+        GLCall(glBindVertexArray(vao));
         /* 绘制 */
+        GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer));
+        GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
         GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
 
         if (r > 1.0f) {
