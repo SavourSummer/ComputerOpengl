@@ -5,32 +5,11 @@
 #include<fstream>
 #include<sstream>
 
-
+#include"Renderer.h"
+#include"IndexBuffer.h"
+#include"VertexBuffer.h"
 //注意生成的exe同一目录须有res/shaders/Basic.shader
-#define ASSERT(x) if (!(x)) __debugbreak()
 
-/* 反斜杠后面不能有空格 */
-#define GLCall(x) do { \
-    GLClearError();\
-    x;\
-    ASSERT(GLLogCall(#x, __FILE__, __LINE__));\
- } while (0)
-
-static void GLClearError()
-{
-    /* 循环获取错误(即清除) */
-    while (glGetError() != GL_NO_ERROR);
-}
-
-static bool GLLogCall(const char* function, const char* file, int line)
-{
-    while (GLenum error = glGetError()) {
-        std::cout << "[OpenGL Error] (" << error << "): "
-            << function << " " << file << ":" << line << std::endl;
-        return false;
-    }
-    return true;
-}
 
 struct ShaderProgramSource
 {
@@ -164,20 +143,20 @@ int main(void)
     unsigned int vao;//设置Vertex Array Object,用于统一大量绘制的中介
     GLCall(glGenVertexArrays(1, &vao));
     GLCall(glBindVertexArray(vao));
-
-    unsigned int buffer;
-    GLCall(glGenBuffers(1, &buffer)); /* 生成缓冲区 */
-    GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer)); /* 绑定缓冲区 */
-    GLCall(glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), positions, GL_STATIC_DRAW)); /* 设置缓冲区数据 */
+    VertexBuffer vb(positions, 4 * 2 * sizeof(float));
+    //unsigned int buffer;
+    //GLCall(glGenBuffers(1, &buffer)); /* 生成缓冲区 */
+    //GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer)); /* 绑定缓冲区 */
+    //GLCall(glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), positions, GL_STATIC_DRAW)); /* 设置缓冲区数据 */
 
     GLCall(glEnableVertexAttribArray(0)); /* 激活顶点属性-索引0-位置 */
     GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0)); /* 设置顶点属性-索引0 */
 
-    unsigned int ibo;
+    /*unsigned int ibo;
     GLCall(glGenBuffers(1, &ibo));
     GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
-    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW));
-
+    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW));*/
+    IndexBuffer ib(indices, 6);
 
     /* 从文件中解析着色器源码 */
     ShaderProgramSource source = ParseShader("res/shaders/Basic.shader");
@@ -207,8 +186,14 @@ int main(void)
         GLCall(glUniform4f(location, r, 0.3f, 0.8f, 1.0f));
         GLCall(glBindVertexArray(vao));
         /* 绘制 */
-        GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer));
-        GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
+       /* GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer));
+        GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));*/
+        vb.Bind();
+        GLCall(glEnableVertexAttribArray(0));
+        GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0));
+
+        ib.Bind();
+
         GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
 
         if (r > 1.0f) {
