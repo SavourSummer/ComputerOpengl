@@ -8,6 +8,7 @@
 #include"Renderer.h"
 #include"IndexBuffer.h"
 #include"VertexBuffer.h"
+#include"VertexArray.h"
 //注意生成的exe同一目录须有res/shaders/Basic.shader
 
 
