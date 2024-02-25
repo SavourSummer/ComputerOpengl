@@ -10,6 +10,7 @@
 #include"VertexBuffer.h"
 #include"VertexArray.h"
 #include"Shader.h"
+#include "Texture.h"
 //注意生成的exe同一目录须有res/shaders/Basic.shader
 
 
@@ -54,22 +55,31 @@ int main(void)
     std::cout << "Status: Using GL " << glVersion << std::endl;
 
     /* 顶点位置浮点型数组 */
+    //float positions[] = {
+    //    -0.5f, -0.5f, // 0
+    //    0.5f, -0.5f,  // 1
+    //    0.5f, 0.5f,   // 2
+    //    -0.5f, 0.5f,  // 3
+    //};
+    //注意只有矩形坐标与纹理坐标对应才有正确的图像
     float positions[] = {
-        -0.5f, -0.5f, // 0
-        0.5f, -0.5f,  // 1
-        0.5f, 0.5f,   // 2
-        -0.5f, 0.5f,  // 3
+            0.0f, 0.0f, 0.0f, 0.0f, // 0
+            1.0f, 0.0f, 1.0f, 0.0f,  // 1
+            1.0f, 1.0f, 1.0f, 1.0f,    // 2
+            0.0f, 1.0f, 0.0f, 1.0f   // 3
     };
-
     /* 索引缓冲区所需索引数组 */
     unsigned int indices[] = {
         0, 1, 2,
         2, 3, 0
     };
+    GLCall(glEnable(GL_BLEND));
+    GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
     VertexArray va;
-    VertexBuffer vb(positions,4*2*sizeof(float));
+    VertexBuffer vb(positions,4*4*sizeof(float));//把4*2改为4*4因为现在有4个浮点数了
 
     VertexBufferLayout layout;
+    layout.Push<float>(2);
     layout.Push<float>(2);
     va.AddBuffer(vb, layout);
     
@@ -103,7 +113,11 @@ int main(void)
     //GLCall(glUniform4f(location, 0.2f, 0.3f, 0.8f, 1.0f)); /* 设置对应的统一变量 */
     Shader shader("res/shaders/Basic.shader");
     shader.Bind();
-    shader.SetUniform4f("u_Color", 0.2f, 0.2f, 0.2f,1.0f);
+    shader.SetUniform4f("u_Color", 0.2f, 0.3f, 0.8f,1.0f);
+
+    Texture texture("res/textures/ChernoLogo.png");
+    texture.Bind();
+    shader.SetUniform1i("u_Texture", 0);//把纹理传给0号插槽
     va.Bind();
     ib.Bind();
     Renderer renderer;
