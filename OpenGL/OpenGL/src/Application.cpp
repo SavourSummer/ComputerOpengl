@@ -68,6 +68,7 @@ int main(void)
             1.0f, 0.0f, 1.0f, 0.0f,  // 1
             1.0f, 1.0f, 1.0f, 1.0f,    // 2
             0.0f, 1.0f, 0.0f, 1.0f   // 3
+            
            
     };
     /* 索引缓冲区所需索引数组 */
@@ -102,7 +103,12 @@ int main(void)
     GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
     GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW));*/
     IndexBuffer ib(indices, 6);
-    glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+    //glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+    /* 这里应该是 960x720 而不是 960x540 的分辨率 */
+    glm::mat4 proj = glm::ortho(0.0f, 5.0f, 0.0f, 5.0f, -1.0f, 1.0f);
+    glm::vec4 vp(100.0f, 100.0f, 0.0f, 1.0f);
+
+
     /* 从文件中解析着色器源码 */
     //ShaderProgramSource source = ParseShader("res/shaders/Basic.shader");
     //unsigned int shader = CreateShader(source.VertexSource, source.FragmentSource);
