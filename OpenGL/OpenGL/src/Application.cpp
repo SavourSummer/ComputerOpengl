@@ -13,7 +13,8 @@
 #include "Texture.h"
 //注意生成的exe同一目录须有res/shaders/Basic.shader
 
-
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
 
 int main(void)
@@ -67,6 +68,7 @@ int main(void)
             1.0f, 0.0f, 1.0f, 0.0f,  // 1
             1.0f, 1.0f, 1.0f, 1.0f,    // 2
             0.0f, 1.0f, 0.0f, 1.0f   // 3
+           
     };
     /* 索引缓冲区所需索引数组 */
     unsigned int indices[] = {
@@ -100,7 +102,7 @@ int main(void)
     GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
     GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW));*/
     IndexBuffer ib(indices, 6);
-
+    glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
     /* 从文件中解析着色器源码 */
     //ShaderProgramSource source = ParseShader("res/shaders/Basic.shader");
     //unsigned int shader = CreateShader(source.VertexSource, source.FragmentSource);
@@ -114,7 +116,7 @@ int main(void)
     Shader shader("res/shaders/Basic.shader");
     shader.Bind();
     shader.SetUniform4f("u_Color", 0.2f, 0.3f, 0.8f,1.0f);
-
+    shader.SetUniformMat4f("u_MVP", proj);
     Texture texture("res/textures/ChernoLogo.png");
     texture.Bind();
     shader.SetUniform1i("u_Texture", 0);//把纹理传给0号插槽
