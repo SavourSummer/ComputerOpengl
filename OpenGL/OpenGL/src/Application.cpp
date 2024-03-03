@@ -32,7 +32,7 @@ int main(void)
     }
     //设置Opengl版本3.3，原4.6,并且设置核心版本，查看兼容性
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 6);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_PROFILE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
@@ -69,10 +69,10 @@ int main(void)
     ////};
     //注意只有矩形坐标与纹理坐标对应才有正确的图像
     float positions[] = {
-            -100.0f, -100.0f, 0.0f, 0.0f, // 0
-            100.0f, -100.0f, 1.0f, 0.0f,  // 1
-            100.0f, 100.0f, 1.0f, 1.0f,    // 2
-            -100.0f, 100.0f, 0.0f, 1.0f   // 3
+            100.0f, 100.0f, 0.0f, 0.0f, // 0
+            200.0f, 100.0f, 1.0f, 0.0f,  // 1
+            200.0f, 200.0f, 1.0f, 1.0f,    // 2
+            100.0f, 200.0f, 0.0f, 1.0f   // 3
             
            
     };
@@ -81,7 +81,22 @@ int main(void)
         0, 1, 2,
         2, 3, 0
     };
+    /**
+         * 混合:
+         * 将输出颜色(判断着色器输出的颜色)和目标缓冲区已有的颜色结合
+         * glEnable/glDisable(启用&关闭) => glBlendFunc(指定颜色因子) => glBlendEquation(指定混合模式)
+         * glBlendEquation(mode) mode: src和dest的混合方式(默认GL_FUNC_ADD, 叠加)
+         *
+         **/
+         /* 启用混合(默认不会启用) */
     GLCall(glEnable(GL_BLEND));
+    /**
+         * glBlendFunc(src, dest) 指定颜色因子
+         * src 指定输出颜色(RGBA)因子的计算方式, 默认为GL_ONE
+         * dest 指定目标颜色因子的计算方式, 默认为GL_ZERO
+         * GL_SRC_ALPHA 因为src的alpha为0, GL_ONE_MINUS_SRC_ALPHA 1-src.alpha
+         * RGBA = Srgba * GL_SRC_ALPHA + Drgba * GL_ONE_MINUS_SRC_ALPHA
+         **/
     GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
     VertexArray va;
     VertexBuffer vb(positions,4*4*sizeof(float));//把4*2改为4*4因为现在有4个浮点数了
@@ -110,12 +125,12 @@ int main(void)
     IndexBuffer ib(indices, 6);
     //glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
     /* 这里应该是 960x720 而不是 960x540 的分辨率 */
-    glm::mat4 proj = glm::ortho(0.0f, 2.0f, 0.0f, 2.0f, -1.0f, 1.0f);
+    glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 720.0f, -1.0f, 1.0f);
     //glm::vec4 vp(100.0f, 100.0f, 0.0f, 1.0f);
     /* 相机位置 视图矩阵 x&y&z */
-    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(1, 1, 1));
+    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-100, 0, 0));
     /* 模型矩阵 对象位置 */
-    glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(1, 1, 1));
+    glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(200, 200, 0));
     glm::mat4 mvp = proj * view * model; /* 模型视图投影矩阵 */
 
     /* 从文件中解析着色器源码 */
@@ -136,8 +151,11 @@ int main(void)
     Texture texture("res/textures/ChernoLogo.png");
     texture.Bind();
     shader.SetUniform1i("u_Texture", 0);//把纹理传给0号插槽
-    va.Bind();
-    ib.Bind();
+    /* 解绑 */
+    va.UnBind();
+    shader.UnBind();
+    vb.UnBind();
+    ib.UnBind();
     Renderer renderer;
     //解绑
     /*GLCall(glBindVertexArray(0));
@@ -159,7 +177,8 @@ int main(void)
         /* 绘制 */
        /* GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer));
         GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));*/
-        vb.Bind();
+        va.Bind();
+        //vb.Bind();
        // GLCall(glEnableVertexAttribArray(0));
        // GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0));
 
