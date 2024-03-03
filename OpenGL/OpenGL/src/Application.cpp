@@ -61,13 +61,18 @@ int main(void)
     //    0.5f, -0.5f,  // 1
     //    0.5f, 0.5f,   // 2
     //    -0.5f, 0.5f,  // 3
-    //};
+    // 下面是顶点个纹理
+    ////  -100.0f, -100.0f, 0.0f, 0.0f, // 0
+    //    100.0f, -100.0f, 1.0f, 0.0f,  // 1
+    //    100.0f, 100.0f, 1.0f, 1.0f,    // 2
+    //    -100.0f, 100.0f, 0.0f, 1.0f   // 3
+    ////};
     //注意只有矩形坐标与纹理坐标对应才有正确的图像
     float positions[] = {
-            0.0f, 0.0f, 0.0f, 0.0f, // 0
-            1.0f, 0.0f, 1.0f, 0.0f,  // 1
-            1.0f, 1.0f, 1.0f, 1.0f,    // 2
-            0.0f, 1.0f, 0.0f, 1.0f   // 3
+            -100.0f, -100.0f, 0.0f, 0.0f, // 0
+            100.0f, -100.0f, 1.0f, 0.0f,  // 1
+            100.0f, 100.0f, 1.0f, 1.0f,    // 2
+            -100.0f, 100.0f, 0.0f, 1.0f   // 3
             
            
     };
@@ -105,9 +110,13 @@ int main(void)
     IndexBuffer ib(indices, 6);
     //glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
     /* 这里应该是 960x720 而不是 960x540 的分辨率 */
-    glm::mat4 proj = glm::ortho(0.0f, 5.0f, 0.0f, 5.0f, -1.0f, 1.0f);
-    glm::vec4 vp(100.0f, 100.0f, 0.0f, 1.0f);
-
+    glm::mat4 proj = glm::ortho(0.0f, 2.0f, 0.0f, 2.0f, -1.0f, 1.0f);
+    //glm::vec4 vp(100.0f, 100.0f, 0.0f, 1.0f);
+    /* 相机位置 视图矩阵 x&y&z */
+    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(1, 1, 1));
+    /* 模型矩阵 对象位置 */
+    glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(1, 1, 1));
+    glm::mat4 mvp = proj * view * model; /* 模型视图投影矩阵 */
 
     /* 从文件中解析着色器源码 */
     //ShaderProgramSource source = ParseShader("res/shaders/Basic.shader");
@@ -122,7 +131,8 @@ int main(void)
     Shader shader("res/shaders/Basic.shader");
     shader.Bind();
     shader.SetUniform4f("u_Color", 0.2f, 0.3f, 0.8f,1.0f);
-    shader.SetUniformMat4f("u_MVP", proj);
+    //shader.SetUniformMat4f("u_MVP", proj
+    shader.SetUniformMat4f("u_MVP", mvp);
     Texture texture("res/textures/ChernoLogo.png");
     texture.Bind();
     shader.SetUniform1i("u_Texture", 0);//把纹理传给0号插槽
