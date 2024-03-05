@@ -16,6 +16,10 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_opengl3.h"
+
 
 int main(void)
 {
@@ -157,6 +161,16 @@ int main(void)
     vb.UnBind();
     ib.UnBind();
     Renderer renderer;
+
+
+    ImGui::CreateContext();
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui::StyleColorsDark();
+
+    // 需要指定glsl版本, 也就是shader中的version
+    const char* glsl_version = "#version 330";
+    ImGui_ImplOpenGL3_Init(glsl_version);
+
     //解绑
     /*GLCall(glBindVertexArray(0));
     GLCall(glUseProgram(0));*/
@@ -164,14 +178,22 @@ int main(void)
     //GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
     float r = 0.0f;
     float increment = 0.05f;
+    glm::vec3 tranlation(200, 200, 0);
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window)) {
         /* Render here */
         //GLCall(glClear(GL_COLOR_BUFFER_BIT));
         renderer.Clear();
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        glm::mat4 model = glm::translate(glm::mat4(1.0f), tranlation);
+        glm::mat4 mvp = proj * view * model; /* 模型视图投影矩阵 */
        // GLCall(glUseProgram(shader));
         shader.Bind();
         shader.SetUniform4f("u_Color", r, 0.3f, 0.8f, 1.0f);
+        shader.SetUniformMat4f("u_MVP", mvp); /*  */
        // GLCall(glUniform4f(location, r, 0.3f, 0.8f, 1.0f));
        // GLCall(glBindVertexArray(vao));
         /* 绘制 */
@@ -193,7 +215,15 @@ int main(void)
             increment = 0.05f;
         }
         r += increment;
+        {
+            ImGui::Begin("ImGui");
+            ImGui::SliderFloat3("Tranlation", &tranlation.x, 0.0f, 960.0f);
+            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+            ImGui::End();
+        }
 
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 
@@ -201,7 +231,11 @@ int main(void)
         glfwPollEvents();
     }
     //GLCall(glDeleteProgram(shader)); /* 删除着色器程序 */
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 
+    glfwDestroyWindow(window);
     glfwTerminate();
     return 0;
 }
