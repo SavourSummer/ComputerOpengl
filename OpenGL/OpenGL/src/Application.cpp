@@ -70,16 +70,20 @@ int main(void)
     //    100.0f, -100.0f, 1.0f, 0.0f,  // 1
     //    100.0f, 100.0f, 1.0f, 1.0f,    // 2
     //    -100.0f, 100.0f, 0.0f, 1.0f   // 3
+    // 100.0f, 100.0f, 0.0f, 0.0f, // 0
+    //200.0f, 100.0f, 1.0f, 0.0f,  // 1
+    //    200.0f, 200.0f, 1.0f, 1.0f,    // 2
+    //    100.0f, 200.0f, 0.0f, 1.0f   // 3
     ////};
     //注意只有矩形坐标与纹理坐标对应才有正确的图像
     float positions[] = {
-            100.0f, 100.0f, 0.0f, 0.0f, // 0
-            200.0f, 100.0f, 1.0f, 0.0f,  // 1
-            200.0f, 200.0f, 1.0f, 1.0f,    // 2
-            100.0f, 200.0f, 0.0f, 1.0f   // 3
+            -50.0f, -50.0f, 0.0f, 0.0f, // 0
+             50.0f, -50.0f, 1.0f, 0.0f, // 1
+             50.0f, 50.0f, 1.0f, 1.0f,  // 2
+            -50.0f, 50.0f, 0.0f, 1.0f   // 3
             
            
-    };
+    };//将C放置于x=0,y=0点，即左下角位置
     /* 索引缓冲区所需索引数组 */
     unsigned int indices[] = {
         0, 1, 2,
@@ -132,10 +136,11 @@ int main(void)
     glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 720.0f, -1.0f, 1.0f);
     //glm::vec4 vp(100.0f, 100.0f, 0.0f, 1.0f);
     /* 相机位置 视图矩阵 x&y&z */
-    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-100, 0, 0));
+    //glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-100, 0, 0));
+    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
     /* 模型矩阵 对象位置 */
-    glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(200, 200, 0));
-    glm::mat4 mvp = proj * view * model; /* 模型视图投影矩阵 */
+    //glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(200, 200, 0));
+    //glm::mat4 mvp = proj * view * model; /* 模型视图投影矩阵 */
 
     /* 从文件中解析着色器源码 */
     //ShaderProgramSource source = ParseShader("res/shaders/Basic.shader");
@@ -151,7 +156,7 @@ int main(void)
     shader.Bind();
     shader.SetUniform4f("u_Color", 0.2f, 0.3f, 0.8f,1.0f);
     //shader.SetUniformMat4f("u_MVP", proj
-    shader.SetUniformMat4f("u_MVP", mvp);
+    //shader.SetUniformMat4f("u_MVP", mvp);//不绑定，以生成两个C
     Texture texture("res/textures/ChernoLogo.png");
     texture.Bind();
     shader.SetUniform1i("u_Texture", 0);//把纹理传给0号插槽
@@ -178,7 +183,9 @@ int main(void)
     //GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
     float r = 0.0f;
     float increment = 0.05f;
-    glm::vec3 tranlation(200, 200, 0);
+    /*glm::vec3 tranlation(200, 100, 0);*///设置C的初始位置
+    glm::vec3 tranlationA(200, 100, 0);//生成两个C坐标
+    glm::vec3 tranlationB(400, 100, 0);
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window)) {
         /* Render here */
@@ -188,26 +195,39 @@ int main(void)
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        glm::mat4 model = glm::translate(glm::mat4(1.0f), tranlation);
+        {
+            glm::mat4 model = glm::translate(glm::mat4(1.0f), tranlationA);
+            //glm::mat4 mvp = proj * view * model;
+
         glm::mat4 mvp = proj * view * model; /* 模型视图投影矩阵 */
        // GLCall(glUseProgram(shader));
         shader.Bind();
-        shader.SetUniform4f("u_Color", r, 0.3f, 0.8f, 1.0f);
+       // shader.SetUniform4f("u_Color", r, 0.3f, 0.8f, 1.0f);
         shader.SetUniformMat4f("u_MVP", mvp); /*  */
        // GLCall(glUniform4f(location, r, 0.3f, 0.8f, 1.0f));
        // GLCall(glBindVertexArray(vao));
         /* 绘制 */
        /* GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer));
         GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));*/
-        va.Bind();
+        //va.Bind();
         //vb.Bind();
        // GLCall(glEnableVertexAttribArray(0));
        // GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0));
 
-        ib.Bind();
+        //ib.Bind();
 
         //GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
         renderer.Draw(va, ib, shader);
+        }
+        {
+            glm::mat4 model = glm::translate(glm::mat4(1.0f), tranlationB);
+            glm::mat4 mvp = proj * view * model;
+
+            shader.Bind();
+            shader.SetUniformMat4f("u_MVP", mvp);
+
+            renderer.Draw(va, ib, shader);
+        }
         if (r > 1.0f) {
             increment = -0.05f;
         }
@@ -217,7 +237,8 @@ int main(void)
         r += increment;
         {
             ImGui::Begin("ImGui");
-            ImGui::SliderFloat3("Tranlation", &tranlation.x, 0.0f, 960.0f);
+            ImGui::SliderFloat3("TranlationA", &tranlationA.x, 0.0f, 960.0f);
+            ImGui::SliderFloat3("TranlationB", &tranlationB.x, 0.0f, 960.0f);//设置可移动距离，包括x和y
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
             ImGui::End();
         }
