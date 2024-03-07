@@ -183,17 +183,26 @@ int main(void)
     //GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
     /*float r = 0.0f;
     float increment = 0.05f;*/
-    test::TestClearColor test;
+   // test::TestClearColor test;
+    //这行代码创建了一个新的 test::TestMenu 对象，并将 currentTest 作为参数传递给 test::TestMenu 的构造函数。然后，它将新创建的 test::TestMenu 对象的地址赋值给 testMenu 指针。
+
+    //    这意味着 testMenu 现在指向一个 test::TestMenu 对象，这个对象持有一个指向 currentTest 所指所指向的 Test 对象的引用。这样，你就可以通过 testMenu 来访问和操作 currentTest。
+    test::Test* currentTest = nullptr;
+    test::TestMenu* testMenu = new test::TestMenu(currentTest);
+    currentTest = testMenu;
+
+    testMenu->RegisterTest<test::TestClearColor>("ClearColor");
     /*glm::vec3 tranlation(200, 100, 0);*///设置C的初始位置
     //glm::vec3 tranlationA(200, 100, 0);//生成两个C坐标
     //glm::vec3 tranlationB(400, 100, 0);
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window)) {
+        GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
         /* Render here */
         //GLCall(glClear(GL_COLOR_BUFFER_BIT));
         renderer.Clear();
-        test.OnUpdate(0.0f);
-        test.OnRender();
+        //test.OnUpdate(0.0f);
+       // test.OnRender();
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
@@ -245,8 +254,20 @@ int main(void)
         //    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
         //    ImGui::End();
         //}
-        test.OnImGuiRender();
-
+        //test.OnImGuiRender();
+        if (currentTest)
+        {
+            currentTest->OnUpdate(0.0f);
+            currentTest->OnRender();
+            ImGui::Begin("ImGui-Test");
+            if (currentTest != testMenu && ImGui::Button("<-"))
+            {
+                delete currentTest;
+                currentTest = testMenu;
+            }
+            currentTest->OnImGuiRender();
+            ImGui::End();
+        }
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         /* Swap front and back buffers */
@@ -254,6 +275,11 @@ int main(void)
 
         /* Poll for and process events */
         glfwPollEvents();
+    }
+    delete currentTest;
+    if (currentTest != testMenu)
+    {
+        delete testMenu;
     }
     //GLCall(glDeleteProgram(shader)); /* 删除着色器程序 */
     ImGui_ImplOpenGL3_Shutdown();

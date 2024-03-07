@@ -4,7 +4,7 @@
 namespace test
 {
 	TestClearColor::TestClearColor()
-		:m_ClearColor{ 0.2f,0.3f,0.8f,1.0f }, m_Label("ClearColor")
+		:m_ClearColor{ 0.2f,0.3f,0.8f,1.0f }
 	{
 
 	}
@@ -23,6 +23,6 @@ namespace test
 	}
 	void TestClearColor::OnImGuiRender()
 	{
-		ImGui::ColorEdit4(m_Label, m_ClearColor);
+		ImGui::ColorEdit4("ClearColor", m_ClearColor);
 	}
 }
