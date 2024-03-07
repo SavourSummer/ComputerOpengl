@@ -66,6 +66,9 @@
     <ClCompile Include="src\vendor\imgui\imgui_impl_glfw.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\Test\TestClearColor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\Basic.shader" />
@@ -1398,6 +1401,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\vendor\imgui\imgui_impl_opengl3_loader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Test\Test.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Test\TestClearColor.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

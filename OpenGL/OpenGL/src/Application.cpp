@@ -19,7 +19,7 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
-
+#include "Test/TestClearColor.h"
 
 int main(void)
 {
@@ -76,19 +76,19 @@ int main(void)
     //    100.0f, 200.0f, 0.0f, 1.0f   // 3
     ////};
     //注意只有矩形坐标与纹理坐标对应才有正确的图像
-    float positions[] = {
-            -50.0f, -50.0f, 0.0f, 0.0f, // 0
-             50.0f, -50.0f, 1.0f, 0.0f, // 1
-             50.0f, 50.0f, 1.0f, 1.0f,  // 2
-            -50.0f, 50.0f, 0.0f, 1.0f   // 3
-            
-           
-    };//将C放置于x=0,y=0点，即左下角位置
+    //float positions[] = {
+    //        -50.0f, -50.0f, 0.0f, 0.0f, // 0
+    //         50.0f, -50.0f, 1.0f, 0.0f, // 1
+    //         50.0f, 50.0f, 1.0f, 1.0f,  // 2
+    //        -50.0f, 50.0f, 0.0f, 1.0f   // 3
+    //        
+    //       
+    //};//将C放置于x=0,y=0点，即左下角位置
     /* 索引缓冲区所需索引数组 */
-    unsigned int indices[] = {
+   /* unsigned int indices[] = {
         0, 1, 2,
         2, 3, 0
-    };
+    };*/
     /**
          * 混合:
          * 将输出颜色(判断着色器输出的颜色)和目标缓冲区已有的颜色结合
@@ -106,65 +106,65 @@ int main(void)
          * RGBA = Srgba * GL_SRC_ALPHA + Drgba * GL_ONE_MINUS_SRC_ALPHA
          **/
     GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
-    VertexArray va;
-    VertexBuffer vb(positions,4*4*sizeof(float));//把4*2改为4*4因为现在有4个浮点数了
+    //VertexArray va;
+    //VertexBuffer vb(positions,4*4*sizeof(float));//把4*2改为4*4因为现在有4个浮点数了
 
-    VertexBufferLayout layout;
-    layout.Push<float>(2);
-    layout.Push<float>(2);
-    va.AddBuffer(vb, layout);
-    
-    //unsigned int vao;//设置Vertex Array Object,用于统一大量绘制的中介
-    //GLCall(glGenVertexArrays(1, &vao));
-    //GLCall(glBindVertexArray(vao));
-    //VertexBuffer vb(positions, 4 * 2 * sizeof(float));
-    //unsigned int buffer;
-    //GLCall(glGenBuffers(1, &buffer)); /* 生成缓冲区 */
-    //GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer)); /* 绑定缓冲区 */
-    //GLCall(glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), positions, GL_STATIC_DRAW)); /* 设置缓冲区数据 */
+    //VertexBufferLayout layout;
+    //layout.Push<float>(2);
+    //layout.Push<float>(2);
+    //va.AddBuffer(vb, layout);
+    //
+    ////unsigned int vao;//设置Vertex Array Object,用于统一大量绘制的中介
+    ////GLCall(glGenVertexArrays(1, &vao));
+    ////GLCall(glBindVertexArray(vao));
+    ////VertexBuffer vb(positions, 4 * 2 * sizeof(float));
+    ////unsigned int buffer;
+    ////GLCall(glGenBuffers(1, &buffer)); /* 生成缓冲区 */
+    ////GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer)); /* 绑定缓冲区 */
+    ////GLCall(glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), positions, GL_STATIC_DRAW)); /* 设置缓冲区数据 */
 
-    //GLCall(glEnableVertexAttribArray(0)); /* 激活顶点属性-索引0-位置 */
-    //GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0)); /* 设置顶点属性-索引0 */
+    ////GLCall(glEnableVertexAttribArray(0)); /* 激活顶点属性-索引0-位置 */
+    ////GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0)); /* 设置顶点属性-索引0 */
 
-    /*unsigned int ibo;
-    GLCall(glGenBuffers(1, &ibo));
-    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
-    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW));*/
-    IndexBuffer ib(indices, 6);
-    //glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
-    /* 这里应该是 960x720 而不是 960x540 的分辨率 */
-    glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 720.0f, -1.0f, 1.0f);
-    //glm::vec4 vp(100.0f, 100.0f, 0.0f, 1.0f);
-    /* 相机位置 视图矩阵 x&y&z */
-    //glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-100, 0, 0));
-    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
-    /* 模型矩阵 对象位置 */
-    //glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(200, 200, 0));
-    //glm::mat4 mvp = proj * view * model; /* 模型视图投影矩阵 */
+    ///*unsigned int ibo;
+    //GLCall(glGenBuffers(1, &ibo));
+    //GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
+    //GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW));*/
+    //IndexBuffer ib(indices, 6);
+    ////glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+    ///* 这里应该是 960x720 而不是 960x540 的分辨率 */
+    //glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 720.0f, -1.0f, 1.0f);
+    ////glm::vec4 vp(100.0f, 100.0f, 0.0f, 1.0f);
+    ///* 相机位置 视图矩阵 x&y&z */
+    ////glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-100, 0, 0));
+    //glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
+    ///* 模型矩阵 对象位置 */
+    ////glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(200, 200, 0));
+    ////glm::mat4 mvp = proj * view * model; /* 模型视图投影矩阵 */
 
-    /* 从文件中解析着色器源码 */
-    //ShaderProgramSource source = ParseShader("res/shaders/Basic.shader");
-    //unsigned int shader = CreateShader(source.VertexSource, source.FragmentSource);
-    //GLCall(glUseProgram(shader)); /* 使用着色器程序 */
+    ///* 从文件中解析着色器源码 */
+    ////ShaderProgramSource source = ParseShader("res/shaders/Basic.shader");
+    ////unsigned int shader = CreateShader(source.VertexSource, source.FragmentSource);
+    ////GLCall(glUseProgram(shader)); /* 使用着色器程序 */
 
 
     //int location;
     //GLCall(location = glGetUniformLocation(shader, "u_Color")); /* 获取指定名称统一变量的位置 */
     //ASSERT(location != -1);
     //GLCall(glUniform4f(location, 0.2f, 0.3f, 0.8f, 1.0f)); /* 设置对应的统一变量 */
-    Shader shader("res/shaders/Basic.shader");
-    shader.Bind();
-    shader.SetUniform4f("u_Color", 0.2f, 0.3f, 0.8f,1.0f);
-    //shader.SetUniformMat4f("u_MVP", proj
-    //shader.SetUniformMat4f("u_MVP", mvp);//不绑定，以生成两个C
-    Texture texture("res/textures/ChernoLogo.png");
-    texture.Bind();
-    shader.SetUniform1i("u_Texture", 0);//把纹理传给0号插槽
-    /* 解绑 */
-    va.UnBind();
-    shader.UnBind();
-    vb.UnBind();
-    ib.UnBind();
+    //Shader shader("res/shaders/Basic.shader");
+    //shader.Bind();
+    //shader.SetUniform4f("u_Color", 0.2f, 0.3f, 0.8f,1.0f);
+    ////shader.SetUniformMat4f("u_MVP", proj
+    ////shader.SetUniformMat4f("u_MVP", mvp);//不绑定，以生成两个C
+    //Texture texture("res/textures/ChernoLogo.png");
+    //texture.Bind();
+    //shader.SetUniform1i("u_Texture", 0);//把纹理传给0号插槽
+    ///* 解绑 */
+    //va.UnBind();
+    //shader.UnBind();
+    //vb.UnBind();
+    //ib.UnBind();
     Renderer renderer;
 
 
@@ -181,67 +181,71 @@ int main(void)
     GLCall(glUseProgram(0));*/
     //GLCall(glBindBuffer(GL_ARRAY_BUFFER,0));
     //GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
-    float r = 0.0f;
-    float increment = 0.05f;
+    /*float r = 0.0f;
+    float increment = 0.05f;*/
+    test::TestClearColor test;
     /*glm::vec3 tranlation(200, 100, 0);*///设置C的初始位置
-    glm::vec3 tranlationA(200, 100, 0);//生成两个C坐标
-    glm::vec3 tranlationB(400, 100, 0);
+    //glm::vec3 tranlationA(200, 100, 0);//生成两个C坐标
+    //glm::vec3 tranlationB(400, 100, 0);
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window)) {
         /* Render here */
         //GLCall(glClear(GL_COLOR_BUFFER_BIT));
         renderer.Clear();
+        test.OnUpdate(0.0f);
+        test.OnRender();
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        {
-            glm::mat4 model = glm::translate(glm::mat4(1.0f), tranlationA);
-            //glm::mat4 mvp = proj * view * model;
+       // {
+       //     glm::mat4 model = glm::translate(glm::mat4(1.0f), tranlationA);
+       //     //glm::mat4 mvp = proj * view * model;
 
-        glm::mat4 mvp = proj * view * model; /* 模型视图投影矩阵 */
-       // GLCall(glUseProgram(shader));
-        shader.Bind();
-       // shader.SetUniform4f("u_Color", r, 0.3f, 0.8f, 1.0f);
-        shader.SetUniformMat4f("u_MVP", mvp); /*  */
-       // GLCall(glUniform4f(location, r, 0.3f, 0.8f, 1.0f));
-       // GLCall(glBindVertexArray(vao));
-        /* 绘制 */
-       /* GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer));
-        GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));*/
-        //va.Bind();
-        //vb.Bind();
-       // GLCall(glEnableVertexAttribArray(0));
-       // GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0));
+       // glm::mat4 mvp = proj * view * model; /* 模型视图投影矩阵 */
+       //// GLCall(glUseProgram(shader));
+       // shader.Bind();
+       //// shader.SetUniform4f("u_Color", r, 0.3f, 0.8f, 1.0f);
+       // shader.SetUniformMat4f("u_MVP", mvp); /*  */
+       //// GLCall(glUniform4f(location, r, 0.3f, 0.8f, 1.0f));
+       //// GLCall(glBindVertexArray(vao));
+       // /* 绘制 */
+       ///* GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer));
+       // GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));*/
+       // //va.Bind();
+       // //vb.Bind();
+       //// GLCall(glEnableVertexAttribArray(0));
+       //// GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0));
 
-        //ib.Bind();
+       // //ib.Bind();
 
-        //GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
-        renderer.Draw(va, ib, shader);
-        }
-        {
-            glm::mat4 model = glm::translate(glm::mat4(1.0f), tranlationB);
-            glm::mat4 mvp = proj * view * model;
+       // //GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
+       // renderer.Draw(va, ib, shader);
+       // }
+       // {
+       //     glm::mat4 model = glm::translate(glm::mat4(1.0f), tranlationB);
+       //     glm::mat4 mvp = proj * view * model;
 
-            shader.Bind();
-            shader.SetUniformMat4f("u_MVP", mvp);
+       //     shader.Bind();
+       //     shader.SetUniformMat4f("u_MVP", mvp);
 
-            renderer.Draw(va, ib, shader);
-        }
-        if (r > 1.0f) {
+       //     renderer.Draw(va, ib, shader);
+       // }
+        /*if (r > 1.0f) {
             increment = -0.05f;
         }
         else if (r < 0.0f) {
             increment = 0.05f;
         }
-        r += increment;
-        {
-            ImGui::Begin("ImGui");
-            ImGui::SliderFloat3("TranlationA", &tranlationA.x, 0.0f, 960.0f);
-            ImGui::SliderFloat3("TranlationB", &tranlationB.x, 0.0f, 960.0f);//设置可移动距离，包括x和y
-            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-            ImGui::End();
-        }
+        r += increment;*/
+        //{
+        //    ImGui::Begin("ImGui");
+        //    ImGui::SliderFloat3("TranlationA", &tranlationA.x, 0.0f, 960.0f);
+        //    ImGui::SliderFloat3("TranlationB", &tranlationB.x, 0.0f, 960.0f);//设置可移动距离，包括x和y
+        //    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+        //    ImGui::End();
+        //}
+        test.OnImGuiRender();
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
