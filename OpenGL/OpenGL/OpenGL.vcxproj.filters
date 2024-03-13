@@ -75,6 +75,9 @@
     <ClCompile Include="src\Test\TestTexture2D.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\Test\TestBatchRender.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\Basic.shader" />
@@ -492,6 +495,7 @@
     <None Include="src\vendor\glm\gtx\wrap.inl">
       <Filter>头文件</Filter>
     </None>
+    <None Include="res\shaders\Batch.shader" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\VertexBuffer.h">
@@ -1416,6 +1420,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\Test\TestTexture2D.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Test\TestBatchRender.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

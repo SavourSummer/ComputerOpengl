@@ -21,6 +21,7 @@
 #include "imgui/imgui_impl_opengl3.h"
 #include "Test/TestClearColor.h"
 #include "Test/TestTexture2D.h"
+#include "Test/TestBatchRender.h"
 int main(void)
 {
     GLFWwindow* window;
@@ -193,6 +194,7 @@ int main(void)
 
     testMenu->RegisterTest<test::TestClearColor>("ClearColor");
     testMenu->RegisterTest<test::TestTexture2D>("2D Texture");
+    testMenu->RegisterTest<test::TestBatchRender>("Batch Render");
     /*glm::vec3 tranlation(200, 100, 0);*///设置C的初始位置
     //glm::vec3 tranlationA(200, 100, 0);//生成两个C坐标
     //glm::vec3 tranlationB(400, 100, 0);
