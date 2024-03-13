@@ -626,6 +626,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\ChernoLogo.png" />
+    <Image Include="res\textures\HazelLogo.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
