@@ -1,8 +1,2 @@
 ﻿  Application.cpp
-  TestClearColor.cpp
-  Test.cpp
-  正在生成代码...
-E:\MyGamesEngine\LearnOpenGLandGLFW\OpenGL\\bin\intermediate\x64\Debug\glm.obj : warning LNK4042: 对象被多次指定；已忽略多余的指定
-glew32s.lib(glew.obj) : warning LNK4099: 未找到 PDB“”(使用“glew32s.lib(glew.obj)”或在“”中寻找)；正在链接对象，如同没有调试信息一样
-LINK : warning LNK4098: 默认库“LIBCMT”与其他库的使用冲突；请使用 /NODEFAULTLIB:library
   OpenGL.vcxproj -> E:\MyGamesEngine\LearnOpenGLandGLFW\OpenGL\bin\x64\Debug\OpenGL.exe

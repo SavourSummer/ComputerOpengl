@@ -1,16 +1,16 @@
-#include<iostream>
+//#include<iostream>
 #include<GL/glew.h>
 #include <GLFW/glfw3.h>
-#include<string>
-#include<fstream>
-#include<sstream>
+//#include<string>
+//#include<fstream>
+//#include<sstream>
 
 #include"Renderer.h"
-#include"IndexBuffer.h"
-#include"VertexBuffer.h"
-#include"VertexArray.h"
-#include"Shader.h"
-#include "Texture.h"
+//#include"IndexBuffer.h"
+//#include"VertexBuffer.h"
+//#include"VertexArray.h"
+//#include"Shader.h"
+//#include "Texture.h"
 //注意生成的exe同一目录须有res/shaders/Basic.shader
 
 #include "glm/glm.hpp"
@@ -20,7 +20,7 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "Test/TestClearColor.h"
-
+#include "Test/TestTexture2D.h"
 int main(void)
 {
     GLFWwindow* window;
@@ -192,6 +192,7 @@ int main(void)
     currentTest = testMenu;
 
     testMenu->RegisterTest<test::TestClearColor>("ClearColor");
+    testMenu->RegisterTest<test::TestTexture2D>("2D Texture");
     /*glm::vec3 tranlation(200, 100, 0);*///设置C的初始位置
     //glm::vec3 tranlationA(200, 100, 0);//生成两个C坐标
     //glm::vec3 tranlationB(400, 100, 0);
