@@ -1,8 +1,9 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #define GLEW_STATIC
+//#define STB_IMAGE_IMPLEMENTATION
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <SOIL2/soil2.h>
+#include <SOIL2/SOIL2.h>
 #include <string>
 #include <iostream>
 #include <fstream>

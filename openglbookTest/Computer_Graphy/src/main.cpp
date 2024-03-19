@@ -73,11 +73,12 @@ void init(GLFWwindow* window)
 	第二个参数设置了宽高比，由视口的宽除以高所得。第三和第四个参数设置了平截头体的近和远平面。
 	我们通常设置近距离为0.1f，而远距离设为100.0f。所有在近平面和远平面内且处于平截头体内的顶点都会被渲染。*/
 	
-	pMat = glm::perspective(1.0472f, aspect, 0.1f, 1000.0f);
+	pMat = glm::perspective(1.0472f, aspect, 0.1f, 1000.0f);////1.0472f=60degree
 	cameraX = 0.0f; cameraY = 0.0f; cameraZ = 12.0f;
 	setupVertices();
 
 }
+//https://learnopengl-cn.github.io/01%20Getting%20started/04%20Hello%20Triangle/
 void display(GLFWwindow* window, double currentTime)
 {
 	/*清空*/
@@ -88,7 +89,7 @@ void display(GLFWwindow* window, double currentTime)
 glUseProgram()，用于将含有两个已编译着色器的程序载入 OpenGL 管线阶段（在 GPU 上！）
 glUseProgram()并没有运行着色器，它只是将着色器加载进硬件。*/
 	glUseProgram(renderingProgram);//在Cherno Opengl中这个函数在iImgGUI中
-	mvLoc = glGetUniformLocation(renderingProgram, "mv_matrix");
+	mvLoc = glGetUniformLocation(renderingProgram, "mv_matrix");//// 获取着色器程序中统一变量的位置
 	projLoc = glGetUniformLocation(renderingProgram, "proj_matrix");
 	vMat = glm::translate(glm::mat4(1.0f), glm::vec3(-cameraX, -cameraY, -cameraZ));
 	/*。GLM 函数调用 value_ptr()返回对矩阵数据的引用，
