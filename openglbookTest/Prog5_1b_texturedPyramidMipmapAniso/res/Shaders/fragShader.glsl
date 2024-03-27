@@ -1,5 +1,5 @@
 # version 430
-int vec2 tc;
+in vec2 tc;
 out vec4 color;
 
 uniform mat4 mv_matrix;

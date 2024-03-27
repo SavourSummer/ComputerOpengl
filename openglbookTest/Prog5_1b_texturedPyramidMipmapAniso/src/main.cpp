@@ -1,4 +1,17 @@
-#include"Utils.h"
+#define GLEW_STATIC
+
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <SOIL2/SOIL2.h>
+#include <string>
+#include <iostream>
+#include <fstream>
+#include <cmath>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp> // glm::value_ptr
+#include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
+#include "Utils.h"
+
 
 #define numVAOs 1
 #define numVBOs 2
@@ -129,6 +142,8 @@ int main(void)
 	while (!glfwWindowShouldClose(window))
 	{
 		display(window, glfwGetTime());
+		glfwSwapBuffers(window);
+		glfwPollEvents();
 
 	}
 	glfwDestroyWindow(window);
