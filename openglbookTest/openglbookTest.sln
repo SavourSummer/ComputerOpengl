@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Computer_Graphy", "Computer
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Prog5_1_texturedPyramid", "Prog5_1_texturedPyramid\Prog5_1_texturedPyramid.vcxproj", "{5C52C023-F868-4408-99B5-77616FD475CF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Prog5_1b_texturedPyramidMipmapAniso", "Prog5_1b_texturedPyramidMipmapAniso\Prog5_1b_texturedPyramidMipmapAniso.vcxproj", "{80EF303A-1C56-4C58-A32D-1C3D2CC40A1D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{5C52C023-F868-4408-99B5-77616FD475CF}.Release|x64.Build.0 = Release|x64
 		{5C52C023-F868-4408-99B5-77616FD475CF}.Release|x86.ActiveCfg = Release|Win32
 		{5C52C023-F868-4408-99B5-77616FD475CF}.Release|x86.Build.0 = Release|Win32
+		{80EF303A-1C56-4C58-A32D-1C3D2CC40A1D}.Debug|x64.ActiveCfg = Debug|x64
+		{80EF303A-1C56-4C58-A32D-1C3D2CC40A1D}.Debug|x64.Build.0 = Debug|x64
+		{80EF303A-1C56-4C58-A32D-1C3D2CC40A1D}.Debug|x86.ActiveCfg = Debug|Win32
+		{80EF303A-1C56-4C58-A32D-1C3D2CC40A1D}.Debug|x86.Build.0 = Debug|Win32
+		{80EF303A-1C56-4C58-A32D-1C3D2CC40A1D}.Release|x64.ActiveCfg = Release|x64
+		{80EF303A-1C56-4C58-A32D-1C3D2CC40A1D}.Release|x64.Build.0 = Release|x64
+		{80EF303A-1C56-4C58-A32D-1C3D2CC40A1D}.Release|x86.ActiveCfg = Release|Win32
+		{80EF303A-1C56-4C58-A32D-1C3D2CC40A1D}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

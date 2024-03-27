@@ -96,7 +96,7 @@ GLuint Utils::prepareShader(int shaderTYPE, const char* shaderPath)
 	if (shaderCompiled != GL_TRUE)
 	{
 		if (shaderTYPE == GL_VERTEX_SHADER) std::cout << "Vertex";
-		if (shaderTYPE == GL_TESS_CONTROL_SHADER) std::cout << "Tess Control ";
+		if (shaderTYPE == GL_TESS_CONTROL_SHADER) std::cout << "Tess Control ";//着色器对象的类型为曲面细分控制着色器
 		if (shaderTYPE == GL_TESS_EVALUATION_SHADER) std::cout << "Tess Eval ";
 		if (shaderTYPE == GL_GEOMETRY_SHADER) std::cout << "Geometry ";
 		if (shaderTYPE == GL_FRAGMENT_SHADER) std::cout << "Fragment ";
